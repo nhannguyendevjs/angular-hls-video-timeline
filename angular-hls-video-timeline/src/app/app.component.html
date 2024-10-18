@@ -1,0 +1,45 @@
+<section class="flex flex-col items-center justify-center gap-6 p-4">
+  <!-- Player -->
+  <video id="video" #video width="{{ player.width }}" class="border rounded" controls></video>
+
+  <!-- Timeline -->
+  <section [ngStyle]="{ width: player.width + 'px' }" class="relative h-12 bg-gray-200 timeline">
+    <!-- Track Bar -->
+    <section class="absolute top-0 w-1 h-12 bg-blue-300 opacity-80" cdkDragBoundary=".timeline" cdkDragLockAxis="x" cdkDrag [cdkDragFreeDragPosition]="{ x: timeline.trackBarPixel, y: 0 }" [ngStyle]="{ width: timeline.trackBarWidth + 'px' }" (cdkDragStarted)="lastTrackBarPixel = timeline.trackBarPixel; lastStartPixel = timeline.startPixel; lastEndPixel = timeline.endPixel" (cdkDragEnded)="trackBarDragEnded($event)">
+      <div class="text-sm text-center text-white bg-amber-500 -translate-y-[20px] cursor-pointer" (click)="addComment()">Comment</div>
+    </section>
+
+    <!-- Start Marker -->
+    <section class="absolute top-0 w-1 h-12 bg-blue-500 cursor-move opacity-80" cdkDragBoundary=".timeline" cdkDragLockAxis="x" cdkDrag [cdkDragFreeDragPosition]="{ x: timeline.startPixel, y: 0 }" (cdkDragStarted)="lastStartPixel = timeline.startPixel" (cdkDragMoved)="startDragMoved($event)" (cdkDragEnded)="startDragEnded($event)">
+      <div class="w-14 text-sm text-center text-white bg-blue-500 rounded-l -translate-x-[52px] -translate-y-[20px]">{{ timeline.startTimeString }}</div>
+    </section>
+    <!-- End Marker -->
+    <section class="absolute top-0 w-1 h-12 bg-green-500 cursor-move opacity-80" cdkDragBoundary=".timeline" cdkDragLockAxis="x" cdkDrag (cdkDragStarted)="lastEndPixel = timeline.endPixel" [cdkDragFreeDragPosition]="{ x: timeline.endPixel, y: 0 }" (cdkDragMoved)="endDragMoved($event)" (cdkDragEnded)="endDragEnded($event)">
+      <div class="w-14 text-sm text-center text-white bg-green-500 rounded-r -translate-y-[20px]">{{ timeline.endTimeString }}</div>
+    </section>
+
+    <!-- Current Marker-->
+    <section class="absolute top-0 w-[1px] h-12 cursor-move" cdkDragBoundary=".timeline" cdkDragLockAxis="x" cdkDrag [cdkDragFreeDragPosition]="{ x: timeline.currentPixel, y: 0 }" (cdkDragEnded)="updateCurrentMarker($event)">
+      <div class="w-[1px] h-full bg-red-500"></div>
+      <div class="w-14 text-sm text-center text-white bg-red-500 rounded -translate-x-[28px] -translate-y-[68px]">{{ player.currentTimeString }}</div>
+    </section>
+  </section>
+
+  <!-- Status -->
+  <section class="px-4 py-2 bg-gray-200 rounded">
+    <p>
+      Current: <span class="text-red-500">{{ player.currentTimeString }}</span>
+    </p>
+    <p>
+      Duration: <span>{{ player.durationString }}</span>
+    </p>
+  </section>
+
+  <!-- Actions -->
+  <section class="flex flex-row gap-4">
+    <button (click)="play()" class="px-4 py-2 text-white bg-blue-500 rounded">Play</button>
+    <button (click)="pause()" class="px-4 py-2 text-white bg-blue-500 rounded">Pause</button>
+    <button (click)="stop()" class="px-4 py-2 text-white bg-blue-500 rounded">Stop</button>
+    <button (click)="seek()" class="px-4 py-2 text-white bg-green-500 rounded">Seek 1/2</button>
+  </section>
+</section>
