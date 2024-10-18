@@ -134,10 +134,6 @@ merge/dev_lombok-refactoring
 
 merge/combined-device-support
 
-## MongoDB Naming Conventions
-
-Use clear, descriptive names. Use camelCase for multi-word names. Avoid using MongoDB reserved words.
-
 ## Visual Studio Extensions
 
 * Prettier - Code formatter
